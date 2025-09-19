@@ -7,7 +7,7 @@ const Settings: React.FC = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  
+
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
@@ -36,14 +36,14 @@ const Settings: React.FC = () => {
   // Load user data when component mounts
   useEffect(() => {
     setProfileData({
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      phone: userData.phone,
-      bio: userData.bio,
-      avatar: userData.avatar,
-      department: userData.department,
-      joinDate: userData.joinDate
+      firstName: userData?.firstName || "",
+      lastName: userData?.lastName || "",
+      email: userData?.email || "",
+      phone: userData?.phone || "",
+      bio: userData?.bio || "",
+      avatar: userData?.avatar || "",
+      department: userData?.department || "",
+      joinDate: userData?.joinDate || "",
     });
   }, [userData]);
 
@@ -78,10 +78,10 @@ const Settings: React.FC = () => {
       alert('Please fill all required fields!');
       return;
     }
-    
+
     // Update the global user context
     updateUser(profileData);
-    
+
     // Show success message
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
@@ -92,24 +92,24 @@ const Settings: React.FC = () => {
       alert('Please fill all password fields!');
       return;
     }
-    
+
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       alert('New passwords do not match!');
       return;
     }
-    
+
     if (passwordData.newPassword.length < 6) {
       alert('Password must be at least 6 characters long!');
       return;
     }
-    
+
     // Reset password form
     setPasswordData({
       currentPassword: '',
       newPassword: '',
       confirmPassword: ''
     });
-    
+
     alert('Password changed successfully! 🔒');
   };
 
@@ -151,11 +151,10 @@ const Settings: React.FC = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 ${
-                      activeTab === tab.id
+                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 ${activeTab === tab.id
                         ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-500'
                         : 'text-gray-600 hover:bg-gray-50'
-                    }`}
+                      }`}
                   >
                     <IconComponent size={20} />
                     <span className="font-medium">{tab.name}</span>
@@ -177,7 +176,7 @@ const Settings: React.FC = () => {
                   <div className="flex items-center space-x-6 mb-6">
                     <div className="relative">
                       <img
-                        src={profileData.avatar || userData.avatar}
+                        src={profileData.avatar || userData?.avatar}
                         alt="Profile"
                         className="w-20 h-20 rounded-full object-cover border-4 border-gray-200"
                       />
@@ -192,9 +191,9 @@ const Settings: React.FC = () => {
                       </label>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-800">{userData.firstName} {userData.lastName}</h3>
-                      <p className="text-gray-500">{userData.role}</p>
-                      <p className="text-sm text-gray-400">{userData.department}</p>
+                      <h3 className="font-semibold text-gray-800">{userData?.firstName} {userData?.lastName}</h3>
+                      <p className="text-gray-500">{userData?.role}</p>
+                      <p className="text-sm text-gray-400">{userData?.department}</p>
                     </div>
                   </div>
                 </div>
@@ -548,7 +547,7 @@ const Settings: React.FC = () => {
             {/* Save Button */}
             <div className="flex justify-end pt-6 border-t border-gray-200">
               {activeTab === 'profile' && (
-                <button 
+                <button
                   onClick={handleSaveProfile}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
                 >
@@ -557,7 +556,7 @@ const Settings: React.FC = () => {
                 </button>
               )}
               {activeTab === 'notifications' && (
-                <button 
+                <button
                   onClick={handleSaveNotifications}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
                 >

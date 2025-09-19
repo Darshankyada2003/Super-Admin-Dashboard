@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from "react";
+import type { ReactNode } from "react";
 import { aiService } from '../services/aiService';
 import type { MeetingSummary, MeetingMOM } from '../types/meeting';
 
@@ -85,7 +86,7 @@ export const MeetingProvider: React.FC<{ children: ReactNode }> = ({ children })
   };
 
   const updateMeeting = (id: string, updates: Partial<Meeting>) => {
-    setMeetings(prev => prev.map(meeting => 
+    setMeetings(prev => prev.map(meeting =>
       meeting.id === id ? { ...meeting, ...updates } : meeting
     ));
   };
@@ -128,7 +129,7 @@ export const MeetingProvider: React.FC<{ children: ReactNode }> = ({ children })
         durationMinutes
       );
 
-      updateMeeting(meetingId, { 
+      updateMeeting(meetingId, {
         status: 'completed',
         meetingMOM: mom
       });

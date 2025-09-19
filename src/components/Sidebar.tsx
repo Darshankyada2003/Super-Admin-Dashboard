@@ -1,17 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { 
-  Home, 
-  Users, 
-  Calendar, 
-  Clock, 
-  CheckSquare, 
-  BarChart3, 
-  Settings, 
+import { NavLink, useNavigate } from 'react-router-dom';
+import {
+  Home,
+  Users,
+  Calendar,
+  Clock,
+  CheckSquare,
+  BarChart3,
+  Settings,
   LogOut,
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { useUser } from '../contexts/UserContext';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -19,21 +20,21 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { 
-    name: 'Dashboard', 
-    path: '/', 
+  {
+    name: 'Dashboard',
+    path: '/',
     icon: Home,
     color: 'text-blue-500'
   },
-  { 
-    name: 'Users', 
-    path: '/users', 
+  {
+    name: 'Users',
+    path: '/users',
     icon: Users,
     color: 'text-green-500'
   },
-  { 
-    name: 'Meetings', 
-    path: '/meetings', 
+  {
+    name: 'Meetings',
+    path: '/meetings',
     icon: Calendar,
     color: 'text-purple-500'
   },
@@ -58,21 +59,30 @@ const menuItems = [
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
+
+  const navigate = useNavigate();
+  const { logout } = useUser();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/signin");
+  }
+
   return (
-    <aside className={`${
-      isCollapsed ? 'w-16' : 'w-64'
-    } bg-white shadow-xl border-r border-gray-200 transition-all duration-300 ease-in-out flex flex-col h-full`}>
-      
+    <aside className={`${isCollapsed ? 'w-16' : 'w-64'
+      } bg-white shadow-xl border-r border-gray-200 transition-all duration-300 ease-in-out flex flex-col h-full`}>
+
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         {!isCollapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">SA</span>
+            <div className="w-8 h-8 flex items-center justify-center">
+              {/* <span className="text-white font-bold text-sm">SA</span> */}
+              <img src="/logo (1).svg" alt="" className='' />
             </div>
             <div>
               <h1 className="text-lg font-bold text-gray-800">Super Admin</h1>
-              <p className="text-xs text-gray-500">Dashboard v2.0</p>
+              {/* <p className="text-xs text-gray-500">Dashboard v2.0</p> */}
             </div>
           </div>
         )}
@@ -97,10 +107,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
               key={item.name}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
-                  isActive
-                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-r-4 border-blue-500 text-blue-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                `flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${isActive
+                  ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-r-4 border-blue-500 text-blue-700'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
                 }`
               }
             >
@@ -108,9 +117,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
                 <>
                   <IconComponent
                     size={20}
-                    className={`${
-                      isActive ? item.color : 'text-gray-400 group-hover:text-gray-600'
-                    } transition-colors duration-200`}
+                    className={`${isActive ? item.color : 'text-gray-400 group-hover:text-gray-600'
+                      } transition-colors duration-200`}
                   />
                   {!isCollapsed && (
                     <span className="font-medium">{item.name}</span>
@@ -132,18 +140,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) => {
         <NavLink
           to="/settings"
           className={({ isActive }) =>
-            `flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
-              isActive
-                ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-r-4 border-blue-500 text-blue-700'
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+            `flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${isActive
+              ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-r-4 border-blue-500 text-blue-700'
+              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
             }`
           }
         >
           <Settings size={20} className="text-gray-400 group-hover:text-gray-600" />
           {!isCollapsed && <span className="font-medium">Settings</span>}
         </NavLink>
-        
-        <button className="flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group text-gray-600 hover:bg-red-50 hover:text-red-600 w-full">
+
+        <button onClick={handleLogout} className="flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group text-gray-600 hover:bg-red-50 hover:text-red-600 w-full">
           <LogOut size={20} className="text-gray-400 group-hover:text-red-500" />
           {!isCollapsed && <span className="font-medium">Logout</span>}
         </button>

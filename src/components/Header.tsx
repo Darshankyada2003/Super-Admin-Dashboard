@@ -62,10 +62,10 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           <div className="flex items-center space-x-3 pl-4 border-l border-gray-200">
             <div className="hidden md:block text-right">
               <p className="text-sm font-medium text-gray-800">{getFullName()}</p>
-              <p className="text-xs text-gray-500">{userData.role}</p>
+              <p className="text-xs text-gray-500">{userData?.role || "Guest"}</p>
             </div>
             <div className="relative">
-              {userData.avatar ? (
+              {userData?.avatar ? (
                 <img
                   src={userData.avatar}
                   alt={getFullName()}
